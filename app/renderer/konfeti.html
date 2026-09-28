@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'">
+<title>Konfeti</title>
+<style>html,body{margin:0;height:100%;background:transparent;overflow:hidden}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(() => {
+  const cv = document.getElementById('c'), g = cv.getContext('2d');
+  const W = innerWidth, H = innerHeight, dpr = devicePixelRatio || 1;
+  cv.width = W * dpr; cv.height = H * dpr; g.scale(dpr, dpr);
+  const [ox, oy] = (location.hash.slice(1) || `${W / 2},${H / 2}`).split(',').map(Number);
+  const RENK = ['#ff5c93', '#ffd23f', '#3ec6ff', '#8f6bff', '#4be39a', '#ff8a3d', '#ffffff', '#ff3d6e'];
+  const P = [];
+  const ekle = (x, y, aci, hiz, yay, n) => {
+    for (let i = 0; i < n; i++) {
+      const a = aci + (Math.random() - 0.5) * yay, v = hiz * (0.55 + Math.random() * 0.6);
+      P.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.35,
+        w: 7 + Math.random() * 8, h: 4 + Math.random() * 6, c: RENK[(Math.random() * RENK.length) | 0],
+        s: Math.random() < 0.25 ? 'o' : 'r', flip: Math.random() * 6, df: 0.08 + Math.random() * 0.12, t: 0 });
+    }
+  };
+  // burst upwards from the cat + cannons from both bottom corners
+  ekle(ox, oy, -Math.PI / 2, 17, Math.PI * 0.9, 170);
+  ekle(0, H, -Math.PI / 3.2, 27, 0.55, 130);
+  ekle(W, H, -Math.PI + Math.PI / 3.2, 27, 0.55, 130);
+  setTimeout(() => { ekle(W * 0.25, H, -Math.PI / 2.4, 25, 0.5, 70); ekle(W * 0.75, H, -Math.PI + Math.PI / 2.4, 25, 0.5, 70); }, 450);
+
+  const SURE = 5600, bas = performance.now();
+  let son = bas;
+  function kare(now) {
+    const dt = Math.min(2.5, (now - son) / 16.67); son = now;
+    const gecen = now - bas;
+    g.clearRect(0, 0, W, H);
+    const sonMat = gecen > SURE - 1200 ? Math.max(0, (SURE - gecen) / 1200) : 1;
+    for (const p of P) {
+      p.t += dt;
+      p.vy += 0.42 * dt; p.vx *= Math.pow(0.985, dt); p.vy *= Math.pow(0.985, dt);
+      if (p.vy > 5.5) p.vy = 5.5 + (p.vy - 5.5) * 0.9;
+      p.x += (p.vx + Math.sin(p.t * 0.08 + p.flip) * 0.8) * dt; p.y += p.vy * dt;
+      p.r += p.vr * dt; p.flip += p.df * dt;
+      if (p.y > H + 30) continue;
+      g.save(); g.globalAlpha = sonMat; g.translate(p.x, p.y); g.rotate(p.r);
+      g.fillStyle = p.c;
+      if (p.s === 'o') { g.beginPath(); g.arc(0, 0, p.h * 0.6, 0, Math.PI * 2); g.fill(); }
+      else { const sy = Math.abs(Math.cos(p.flip)); g.fillRect(-p.w / 2, -p.h * sy / 2, p.w, p.h * sy + 0.5); }
+      g.restore();
+    }
+    if (gecen < SURE) requestAnimationFrame(kare); else g.clearRect(0, 0, W, H);
+  }
+  requestAnimationFrame(kare);
+})();
+</script>
+</body>
+</html>

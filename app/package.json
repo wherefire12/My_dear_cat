@@ -1,0 +1,9 @@
+{
+  "name": "kedi",
+  "productName": "Kedi",
+  "version": "1.0.1",
+  "description": "Desktop cat",
+  "main": "main.js",
+  "author": "Hakan",
+  "license": "UNLICENSED"
+}

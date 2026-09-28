@@ -1,0 +1,5 @@
+ultralytics
+rembg[cpu]
+opencv-python-headless
+numpy
+pillow

@@ -1,0 +1,14 @@
+{
+  "name": "my-dear-cat",
+  "private": true,
+  "description": "A desktop cat for Windows, made from real videos of a beloved cat",
+  "scripts": {
+    "start": "electron app",
+    "package": "node build/package-win.mjs",
+    "installer": "bash build/build-installer.sh"
+  },
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.4.5"
+  }
+}

@@ -1,0 +1,60 @@
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: transparent; overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+  font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+
+/* ------------------------------------------------ cat stage */
+#sahne { position: relative; width: 372px; height: 440px; }
+.katman {
+  position: absolute; left: 0; right: 0; bottom: 0; top: 0;
+  display: flex; justify-content: center; align-items: flex-end;
+  opacity: 0; transition: opacity .38s ease; pointer-events: none;
+}
+.katman.gor { opacity: 1; }
+.katman video { display: block; pointer-events: none; }
+.katman.kart { padding-bottom: 10px; }
+.katman.kart video {
+  border-radius: 20px; border: 4px solid #fff; object-fit: cover; background: #fff;
+  box-shadow: 0 10px 28px rgba(0,0,0,.28), 0 2px 6px rgba(0,0,0,.18);
+}
+body.kedi-ustunde #sahne { cursor: grab; }
+body.surukleniyor, body.surukleniyor * { cursor: grabbing !important; }
+
+/* ------------------------------------------------ hearts */
+#kalpler { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.kalp {
+  position: absolute; width: 26px; height: 26px; opacity: 0;
+  animation: kalp 2.6s ease-out forwards;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
+}
+.kalp svg { width: 100%; height: 100%; fill: #ff5c93; }
+@keyframes kalp {
+  0%   { opacity: 0; transform: translate(0, 10px) scale(.4); }
+  15%  { opacity: 1; transform: translate(0, 0) scale(1.1); }
+  70%  { opacity: .9; }
+  100% { opacity: 0; transform: translate(var(--dx, 0), -90px) scale(.9) rotate(var(--r, 0deg)); }
+}
+
+/* ------------------------------------------------ buttons */
+#bar {
+  height: 64px; display: flex; justify-content: center; align-items: center; gap: 7px;
+  padding: 0 6px 6px; transition: opacity .3s ease, transform .3s ease;
+}
+body.bar-otomatik:not(.fare-yakin) #bar { opacity: 0; transform: translateY(6px); pointer-events: none; }
+.btn {
+  appearance: none; border: 0; outline: 0; cursor: pointer;
+  height: 44px; min-width: 0; padding: 0 13px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  border-radius: 22px; background: rgba(255,255,255,.94); color: #3a3340;
+  font-family: inherit; font-weight: 600; font-size: 13.5px; line-height: 1;
+  box-shadow: 0 3px 10px rgba(0,0,0,.22), inset 0 -2px 0 color-mix(in srgb, var(--c) 55%, transparent);
+  transition: transform .15s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.btn .e { font-size: 17px; line-height: 1; font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif; }
+.btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 6px 14px rgba(0,0,0,.24), inset 0 -2px 0 var(--c); }
+.btn:active { transform: translateY(0) scale(.95); }
+.btn.aktif { background: var(--c); color: #fff; box-shadow: 0 4px 14px color-mix(in srgb, var(--c) 60%, rgba(0,0,0,.3)); }
+.btn[hidden] { display: none; }

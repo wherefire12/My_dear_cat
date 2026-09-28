@@ -1,0 +1,10 @@
+node_modules
+dist/
+out/
+staging/
+*.part[0-9][0-9]
+.testud/
+test_out/
+video-processing/*.pt
+video-processing/source_videos/
+__pycache__/
