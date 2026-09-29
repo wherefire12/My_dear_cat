@@ -101,4 +101,3 @@ SOURCE_DIR=/path/to/raw/videos/ python video-processing/matting.py sevme_buton_1
 
 ---
 
-Made with love by Hakan. 💕
