@@ -8,24 +8,22 @@ brush it and throw it a party. When nobody is around, it just rests, the way it 
 
 ## Install
 
-1. Download **Kedi-Kurulum.exe** from the [Releases](../../releases) page.
-2. Double-click it → *İleri* (Next) → *Bitir* (Finish). No administrator rights needed.
+1. Download **MyDearCat-Setup.exe** from the [Releases](../../releases) page.
+2. Double-click it → *Next* → *Finish*. No administrator rights needed.
 3. The cat appears in the bottom-right corner and comes back every time the computer starts.
 
-To uninstall: Windows Settings → Apps → **Kedi** → Uninstall.
+To uninstall: Windows Settings → Apps → **My Dear Cat** → Uninstall.
 
 > If Windows shows an "unknown publisher" warning, choose *More info → Run anyway*. The app just isn't code-signed.
-
-The app's interface is in Turkish on purpose. It was made for a Turkish user.
 
 ## What it does
 
 | | |
 |---|---|
-| **Sev** (Pet) | Plays one of four petting clips at random while hearts float up. Clicking the cat does the same. |
-| **Mama** (Feed) | The cat eating, shown in a rounded frame. |
-| **Temizle** (Clean) | The cat being brushed with a grooming glove. |
-| **Parti** (Party) | The cat, plus confetti raining across the whole screen. |
+| **Pet** | Plays one of four petting clips at random while hearts float up. Clicking the cat does the same. |
+| **Feed** | The cat eating, shown in a rounded frame. |
+| **Clean** | The cat being brushed with a grooming glove. |
+| **Party** | The cat, plus confetti raining across the whole screen. |
 | Idle | Stabilised loops; switches to a different pose at random every 25–50 s. |
 | Mouse nearby | The cat turns and looks at you. |
 | Dragging | Grab the cat and put it anywhere; it remembers the spot. |
@@ -38,7 +36,7 @@ button visibility, start with Windows, reset position, open the videos folder, a
 
 ## Videos
 
-On start-up the app scans `videolar/` (videos). Each subfolder is a behaviour:
+On start-up the app scans `videolar/` (videos). Each subfolder is a behaviour (folder names are Turkish):
 
 | Folder | When it plays |
 |---|---|
@@ -58,7 +56,7 @@ On start-up the app scans `videolar/` (videos). Each subfolder is a behaviour:
 npm install
 npm start               # run the cat in development mode (reads videolar/ from the repo root)
 npm run package         # dist/Kedi-win32-x64 (Windows x64 app)
-npm run installer       # out/Kedi-Kurulum.exe (needs NSIS: apt install nsis)
+npm run installer       # out/MyDearCat-Setup.exe (needs NSIS: apt install nsis)
 ```
 
 Packaging also works on Linux and macOS; the Windows installer only needs `makensis`.
@@ -70,7 +68,7 @@ app/                 Electron app
   renderer/          index.html, app.js (player + behaviours), style.css, konfeti.html (confetti)
   test-scenario.js   automated screenshot test with KEDI_TEST=<dir> (never packaged)
 videolar/            full-quality clips
-build/               icon, NSIS script (installer.nsi), packaging scripts, Turkish user readme
+build/               icon, NSIS script (installer.nsi), packaging scripts, user readme
 video-processing/    the Python pipeline that cut the cat out of the original videos (below)
 ```
 

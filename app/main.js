@@ -82,8 +82,8 @@ function klipleriTara() {
 // ---------------------------------------------------------------- kedi:// protocol (with Range support for video)
 function dosyaYaniti(file, req) {
   let st;
-  try { st = fs.statSync(file); } catch { return new Response('bulunamadı', { status: 404 }); }
-  if (!st.isFile()) return new Response('bulunamadı', { status: 404 });
+  try { st = fs.statSync(file); } catch { return new Response('not found', { status: 404 }); }
+  if (!st.isFile()) return new Response('not found', { status: 404 });
   const type = MIME[path.extname(file).toLowerCase()] || 'application/octet-stream';
   const range = req.headers.get('range');
   if (range) {
@@ -111,9 +111,9 @@ function protokoluKur() {
     let base, rel;
     if (p.startsWith('/app/')) { base = RENDER_DIR; rel = p.slice(5); }
     else if (p.startsWith('/videolar/')) { base = VIDEO_DIR; rel = p.slice(10); }
-    else return new Response('bulunamadı', { status: 404 });
+    else return new Response('not found', { status: 404 });
     const file = path.normalize(path.join(base, rel));
-    if (!file.startsWith(path.normalize(base + path.sep))) return new Response('yasak', { status: 403 });
+    if (!file.startsWith(path.normalize(base + path.sep))) return new Response('forbidden', { status: 403 });
     return dosyaYaniti(file, req);
   });
 }
@@ -134,7 +134,7 @@ function pencereOlustur() {
     ...pos, width, height,
     transparent: true, frame: false, resizable: false, maximizable: false, minimizable: false,
     fullscreenable: false, skipTaskbar: true, hasShadow: false, backgroundColor: '#00000000',
-    alwaysOnTop: cfg.ustte, show: false, title: 'Kedi', icon: ICON, thickFrame: false,
+    alwaysOnTop: cfg.ustte, show: false, title: 'My Dear Cat', icon: ICON, thickFrame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true, nodeIntegration: false, backgroundThrottling: false, spellcheck: false,
@@ -270,25 +270,25 @@ function menuyuKur() {
   const gorunur = win && win.isVisible();
   const radyo = (ad, deger) => ({ label: ad, type: 'radio', checked: cfg.boyut === deger, click: () => boyutDegistir(deger) });
   const menu = Menu.buildFromTemplate([
-    { label: gorunur ? 'Kediyi gizle' : 'Kediyi göster', click: () => { if (!win) return; if (win.isVisible()) win.hide(); else { win.showInactive(); win.moveTop(); } } },
-    { label: 'Kediyi öne getir', click: () => { if (win) { win.showInactive(); win.moveTop(); } } },
+    { label: gorunur ? 'Hide the cat' : 'Show the cat', click: () => { if (!win) return; if (win.isVisible()) win.hide(); else { win.showInactive(); win.moveTop(); } } },
+    { label: 'Bring to front', click: () => { if (win) { win.showInactive(); win.moveTop(); } } },
     { type: 'separator' },
-    { label: 'Boyut', submenu: [radyo('Küçük', 'kucuk'), radyo('Orta', 'orta'), radyo('Büyük', 'buyuk'), radyo('Çok büyük', 'cok_buyuk')] },
-    { label: 'Her zaman en üstte', type: 'checkbox', checked: cfg.ustte, click: (mi) => {
+    { label: 'Size', submenu: [radyo('Small', 'kucuk'), radyo('Medium', 'orta'), radyo('Large', 'buyuk'), radyo('Extra large', 'cok_buyuk')] },
+    { label: 'Always on top', type: 'checkbox', checked: cfg.ustte, click: (mi) => {
       cfg.ustte = mi.checked; ayarYaz(); if (win) win.setAlwaysOnTop(cfg.ustte, 'floating'); } },
-    { label: 'Ses', type: 'checkbox', checked: cfg.ses, click: (mi) => { cfg.ses = mi.checked; ayarYaz(); ayarlariGonder(); } },
-    { label: 'Butonlar', submenu: [
-      { label: 'Her zaman görünsün', type: 'radio', checked: cfg.butonlar === 'her_zaman', click: () => { cfg.butonlar = 'her_zaman'; ayarYaz(); ayarlariGonder(); } },
-      { label: 'Sadece fare yaklaşınca', type: 'radio', checked: cfg.butonlar === 'yaklasinca', click: () => { cfg.butonlar = 'yaklasinca'; ayarYaz(); ayarlariGonder(); } },
+    { label: 'Sound', type: 'checkbox', checked: cfg.ses, click: (mi) => { cfg.ses = mi.checked; ayarYaz(); ayarlariGonder(); } },
+    { label: 'Buttons', submenu: [
+      { label: 'Always visible', type: 'radio', checked: cfg.butonlar === 'her_zaman', click: () => { cfg.butonlar = 'her_zaman'; ayarYaz(); ayarlariGonder(); } },
+      { label: 'Only when the mouse is near', type: 'radio', checked: cfg.butonlar === 'yaklasinca', click: () => { cfg.butonlar = 'yaklasinca'; ayarYaz(); ayarlariGonder(); } },
     ] },
-    { label: 'Bilgisayar açılınca başlasın', type: 'checkbox', checked: cfg.otomatik, click: (mi) => { cfg.otomatik = mi.checked; ayarYaz(); otomatikBaslat(cfg.otomatik); } },
+    { label: 'Start with Windows', type: 'checkbox', checked: cfg.otomatik, click: (mi) => { cfg.otomatik = mi.checked; ayarYaz(); otomatikBaslat(cfg.otomatik); } },
     { type: 'separator' },
-    { label: 'Konumu sıfırla', click: () => {
+    { label: 'Reset position', click: () => {
       if (!win) return; const b = win.getBounds(); const p = varsayilanKonum(b.width, b.height);
       win.setBounds({ ...p, width: b.width, height: b.height }); win.showInactive(); konumuKaydet(); } },
-    { label: 'Videolar klasörünü aç', click: () => shell.openPath(VIDEO_DIR) },
+    { label: 'Open videos folder', click: () => shell.openPath(VIDEO_DIR) },
     { type: 'separator' },
-    { label: 'Çıkış', click: () => app.quit() },
+    { label: 'Quit', click: () => app.quit() },
   ]);
   tray.setContextMenu(menu);
 }
@@ -297,7 +297,7 @@ function tepsiyiKur() {
   let img = nativeImage.createFromPath(TRAY_ICON);
   if (img.isEmpty()) img = nativeImage.createFromPath(ICON).resize({ width: 32, height: 32 });
   tray = new Tray(img);
-  tray.setToolTip('Kedi');
+  tray.setToolTip('My Dear Cat');
   tray.on('click', () => { if (win) { win.showInactive(); win.moveTop(); } });
   menuyuKur();
 }

@@ -3,10 +3,10 @@
  * Reads the files in videolar/<folder>/:
  *   bosta       → idle loops, played continuously in random order
  *   yaklasinca  → when the mouse comes close to the cat
- *   sevme       → the "Sev" (pet) button and clicking the cat (random pick)
- *   mama, temizle, parti → the buttons of the same name (feed, clean, party)
+ *   sevme       → the Pet button and clicking the cat (random pick)
+ *   mama, temizle, parti → the Feed, Clean and Party buttons
  * .webm = transparent cat, .mp4/.mov = shown as a framed card.
- * (Identifiers and UI text are Turkish: the app was made for a Turkish user.)
+ * (Identifiers are Turkish: the app was first made for a Turkish user.)
  */
 const api = window.kedi;
 const sahne = document.getElementById('sahne');
